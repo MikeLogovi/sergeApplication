@@ -5,60 +5,56 @@ use App\classes\User\UserManager;
 use App\classes\User\MailerManager\PHPMailer\MailerManager;
     $functions = new Functions();
     $functions->save_input_data();
-    if($functions->not_empty_by_post(['pseudo','email','motpass','confpass','code'])){
-                  if(!$functions->verifyCode($_POST['code'],$_SESSION['aleat_caract'])){
-                        $_SESSION['errors']['errcode']="Code anti-robot invalide.Veuillez reessayer!";  
-                  }
-                  if(!$functions->verifyPassword($_POST['motpass'],$_POST['confpass'])){
-                        $_SESSION['errors']['errpass']="Veuillez bien revérifier votre mot de passe!";
-                  }
-                  if(!$functions->verifyEmail($_POST['email'])){
-                    $_SESSION['errors']['errmail']="Format d'email incorrect! Veuillez reésayer!";
-                  }
-                  if(!$functions->verifyPseudo($_POST['pseudo'])){
-                    $_SESSION['errors']['errpseudo']="Pseudo trop court. Minimum 3 caractères";
+    if($functions->not_empty_by_post(['matricule','confmatricule','prenoms','classe','dateNaissance','numeroTelephone'])){
+                  if(!$functions->verifyMatricule($_POST['matricule'],$_POST['confmatricule'])){
+                        $_SESSION['errors']['errmatricule']="Veuillez bien revérifier votre matricule!";
                   }
                   $userManager=new UserManager();
-                  $exist=$userManager->userNotAlreadyExist($_POST['pseudo'],$_POST['email']);
+                  $exist=$userManager->userNotAlreadyExist($_POST['matricule']);
                   if(!empty($exist)){
-                     if(!empty($exist['pseudo']) && $exist['pseudo']=='pseudo'){
-                         $_SESSION['errors']['errpseudoalreadyexist']="Pseudo déjà utilisé! Essayez ".$functions->generatePseudo($_POST['pseudo']);    
-                  }
-                  if(!empty($exist['email']) &&$exist['email']=='email'){
-                          $_SESSION['errors']['erremailalreadyexist']="Adresse e-mail déjà utilisé!";
+                     if(!empty($exist['matricule'])){
+                         $_SESSION['errors']['errmatriculealreadyexist']="Matricule déjà existant";
                   }
                 }
-                 
-                 
-
                 if(isset($_SESSION['errors'])){
-                       require('src\view\formulaire\formulaire.view.php');
+                       header('Location:inscription');
                   }
-                  else{
-                      //Envoi du message
-                    $pseudo=$_POST['pseudo'];
-                    $email=$_POST['email'];
-                    $motpass=sha1(md5($_POST['motpass']));
-                    $functions->insertDb($functions->xssControl($pseudo),$functions->xssControl($email),$functions->xssControl($motpass));
-                    $pseudo_hash=$functions->cleanPseudo($pseudo);
-                    $token=sha1(md5($functions->xssControl($pseudo).$functions->xssControl($email).$functions->xssControl($motpass)));
-                    $mail=new MailerManager();
-                    ob_start();
-                    require('src/view/email/email.view.php');
-                    $content=ob_get_clean();
-                    if($mail->sendMail($_POST['email'],$_POST['pseudo'],$content)){
-                      $site->set_flash("Email d 'activation envoyé!Veuillez s'il vous plait consulter votre messagerie pour activer votre compte","success");
-                      require('src/view/formulaire/formulaire.view.php');
-                    }
-                    else{
-                      $site->set_flash("Email d 'activation non envoyé à cause d'une erreur!Veuillez s'il vous plait vous reinscrire","warning");
-                      require('src/view/formulaire/formulaire.view.php');
-                    }
+                  else{     $picture=null;
+                            if(!empty($_FILES['photoDeProfil']['name'])){
+                                  if($functions->good_files(['photoDeProfil'])){
 
-                  }       
+                                            $info=pathinfo($_FILES['photoDeProfil']['name']);
+                                            $extension=$info['extension'];
+                                            if(!in_array($extension,['jpeg','JPEG','jpg','JPG','png','PNG'])){
+                                                                $site->set_flash('Format de fichier invalide!Essayez un fichier png ou jpg au niveau de profil','danger');
+                                                                header('Location:connexion');
+                                            }
+                                             else{
+                                                    $token=sha1($prenoms.$classe.$numeroTelephone);
+                                                    $picture='src/public/photo_membre/'.$token.'.'.$extension;
+                                                    move_uploaded_file($_FILES['photoDeProfil']['tmp_name'],$picture);
+                                             }
+
+                                  }
+                                  else{
+                                         set_flash("Erreur dans l'upload de la photo.Veuillez reéssayer s'il vous plait","danger");
+                                    header('Location:messagerie');
+                                  }
+                          }
+
+
+                    $matricule=$_POST['matricule'];
+                    $prenoms=$_POST['prenoms'];
+                    $classe=$_POST['classe'];
+                    $dateNaissance=$_POST['dateNaissance'];
+                    $numeroTelephone=$_POST['numeroTelephone'];
+                    $photoDeProfil=$picture;
+                    $functions->insertDb($functions->xssControl(sha1(md5($matricule))),$functions->xssControl($prenoms),
+                    $functions->xssControl($classe),$functions->xssControl($dateNaissance),$functions->xssControl($numeroTelephone),$functions->xssControl($photoDeProfil));
+                    header('location:application');
+                  }
    }
-
     else{
-      $_SESSION['errors']['errchamp']="Veuillez remplir tous les champs s'il vous plait";
+      $_SESSION['errors']['errchamp']="Tous les champs sauf pour la photo sont obligatoires";
     	header('location:inscription');
-    }       
+    }

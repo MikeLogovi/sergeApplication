@@ -16,9 +16,12 @@ $function=new Functions();
 <body>
 <div class='login'>
   <h2>Connexion</h2>
-  <input id='matricule' name='password' placeholder='Matricule' type='password'>
-  <input name='Prenoms' placeholder='Prenoms' type='text' id='prenom'><br/><br/>
-  <input class='animated' type='submit' value="Se connecter">
+  <form method='post' action='connexionTreatment'>
+  <input id='matricule' name='vermatricule' placeholder='Matricule' type='password'>
+  <input name='verprenoms' placeholder='Prenoms' type='text' id='prenom'><br/><br/>
+  <input type="checkbox" name='souvenir' id='souvenir'style='float:left'>&nbsp;&nbsp;Se souvenir de moi<br/><br/>
+  <input class='animated' type='submit' value="Se connecter" style='clear:both'>
+</form>
   <a class='forgot' href='inscription'>Pas encore inscrit?</a>
 </div>
 

@@ -4,30 +4,32 @@ use App\classes\database\Manager;
 use App\classes\User\User;
 use \PDO as PDO;
     Class UserManager extends Manager{
-        
+
     	public function create(User $user){
            $bdd=$this->baseConnection();
-           $req=$bdd->prepare('INSERT INTO user(pseudo,email,motpass,dateCreationCompte) VALUES(:pseudo,:email,:motpass,NOW())');
+           $req=$bdd->prepare('INSERT INTO etudiant(matricule,prenoms,classe,dateNaissance,numeroTelephone,photoDeProfil) VALUES(:matricule,:prenoms,:classe,:dateNaissance,:numeroTelephone,:photoDeProfil)');
            $req->execute(array(
-              'pseudo'=>$user->getPseudo(),
-              'email'=>$user->getEmail(),
-              'motpass'=>$user->getMotPass()
+              'matricule'=>$user->getMatricule(),
+              'prenoms'=>$user->getPrenoms(),
+              'classe'=>$user->getClasse(),
+              'dateNaissance'=>$user->getDateNaissance(),
+              'numeroTelephone'=>$user->getNumeroTelephone(),
+              'photoDeProfil'=>$user->getPhotoDeProfil()==null?'src/public/photo_membre/anonyme.jpg':$user->getPhotoDeProfil()
            ));
     	}
-    	public function read($user,$email=null){
+    	public function read($matricule){
            $bdd=$this->baseConnection();
-           $req=$bdd->prepare('SELECT * FROM user WHERE pseudo=:user OR email=:user OR email=:email');
+           $req=$bdd->prepare('SELECT * FROM etudiant WHERE matricule=:matricule');
            $req->execute(array(
-            'user'=>$user,
-            'email'=>$email)
+            'matricule'=>$matricule)
            );
            return $req;
     	}
     	public function update(User $user,$id=null){
-          $tab_user=array('id'=>$user->getId(),'pseudo'=>$user->getPseudo(),'nom'=>$user->getNom(),'prenoms'=>$user->getPrenoms(),'email'=>$user->getEmail(),'motPass'=>$user->getMotPass(),'photoDeProfil'=>$user->getPhotoDeProfil(),'ipAdress'=>$user->getIpAdress(),'role'=>$user->getRole());
+          $tab_user=array('matricule'=>$user->getMatricule(),'prenoms'=>$user->getPrenoms(),'classe'=>$user->getClasse(),'dateNaissance'=>$user->getDateNaissance(),'numeroTelephone'=>$user->getnumeroTelephone(),'photoDeProfil'=>$user->getPhotoDeProfil());
          // var_dump($tab_user);
           //var_dump(get_class_methods(get_class($user)));
-         
+
           //die();
           foreach($tab_user as $attribute=>$value){
             $ucattr=ucfirst($attribute);
@@ -51,7 +53,7 @@ use \PDO as PDO;
                       else{
                          $this->$method3($user->$attribute,$id);
                       }
-                    
+
                    }
                  }
               }
@@ -65,70 +67,60 @@ use \PDO as PDO;
           }
         }
     	}
-      private function updatePseudo($pseudo,$id){
+
+      private function updateNumeroTelephone($numeroTelephone,$matricule){
         $bdd=$this->baseConnection();
-        $req=$bdd->prepare('UPDATE user SET pseudo=:pseudo WHERE id=:id');
+        $req=$bdd->prepare('UPDATE user SET numeroTelephone=:numeroTelephone WHERE matricule=:matricule');
         $req->execute(array(
-             'pseudo'=>$pseudo,
-             'id'=>$id
+             'numeroTelephone'=>$numeroTelephone,
+             'matricule'=>$matricule
         ));
       }
-      private function updateEmail($email,$id){
+      private function updateMatricule($new,$old){
         $bdd=$this->baseConnection();
-        $req=$bdd->prepare('UPDATE user SET email=:email WHERE id=:id');
+        $req=$bdd->prepare('UPDATE user SET matricule=:new WHERE matricule=:old');
         $req->execute(array(
-             'email'=>$email,
-             'id'=>$id
+             'new'=>$new,
+             'old'=>$old
         ));
       }
-      private function updateMotPass($motpass,$id){
+
+       private function updateClasse($classe,$matricule){
         $bdd=$this->baseConnection();
-        $req=$bdd->prepare('UPDATE user SET motpass=:motpass WHERE id=:id');
+        $req=$bdd->prepare('UPDATE user SET classe=:classe WHERE matricule=:matricule');
         $req->execute(array(
-             'motpass'=>$motpass,
-             'id'=>$id
+             'classe'=>$classe,
+             'matricule'=>$matricule
         ));
       }
-       private function updateNom($nom,$id){
+
+      private function updatePrenoms($prenoms,$matricule){
         $bdd=$this->baseConnection();
-        $req=$bdd->prepare('UPDATE user SET nom=:nom WHERE id=:id');
+        $req=$bdd->prepare('UPDATE user SET prenoms=:prenoms WHERE matricule=:matricule');
         $req->execute(array(
-             'nom'=>$nom,
-             'id'=>$id
+             'prenoms'=>$prenoms,
+             'matricule'=>$matricule
         ));
       }
-      private function updatePrenoms($prenom,$id){
+
+      private function updateDateNaissance($dateNaissance,$matricule){
         $bdd=$this->baseConnection();
-        $req=$bdd->prepare('UPDATE user SET prenom=:prenom WHERE id=:id');
+        $req=$bdd->prepare('UPDATE user SET dateNaissance=:dateNaissance WHERE matricule=:matricule');
         $req->execute(array(
-             'prenom'=>$prenom,
-             'id'=>$id
+             'dateNaissance'=>$dateNaissance,
+             'matricule'=>$matricule
         ));
       }
-      private function updatePhotoDeProfil($photoDeProfil,$id){
+
+      private function updatePhotoDeProfil($photoDeProfil,$matricule){
         $bdd=$this->baseConnection();
-        $req=$bdd->prepare('UPDATE user SET photoDeProfil=:photoDeProfil WHERE id=:id');
+        $req=$bdd->prepare('UPDATE user SET photoDeProfil=:photoDeProfil WHERE matricule=:matricule');
         $req->execute(array(
              'photoDeProfil'=>$photoDeProfil,
-             'id'=>$id
+             'matricule'=>$matricule
         ));
       }
-      private function updateRole($role,$id){
-        $bdd=$this->baseConnection();
-        $req=$bdd->prepare('UPDATE user SET role=:role WHERE id=:id');
-        $req->execute(array(
-             'role'=>$role,
-             'id'=>$id
-        ));
-      }
-      private function updateIpAdress($ipAdress,$id){
-        $bdd=$this->baseConnection();
-        $req=$bdd->prepare('UPDATE user SET ipAdress=:ipAdress WHERE id=:id');
-        $req->execute(array(
-             'ipAdress'=>$ipAdress,
-             'id'=>$id
-        ));
-      }
+
     	public function delete($user){
 
     	}
@@ -136,41 +128,27 @@ use \PDO as PDO;
 
 
     	}
-    	public function userNotAlreadyExist($pseudo,$email){
+    	public function userNotAlreadyExist($matricule){
           $exist=[];
           $bdd=$this->baseConnection();
-          $req1=$bdd->prepare('SELECT pseudo from user WHERE pseudo=:pseudo');
-          $req1->execute(array(
-            'pseudo'=>$pseudo
+          $req=$bdd->prepare('SELECT matricule from etudiant WHERE matricule=:matricule');
+          $req->execute(array(
+            'matricule'=>$matricule
           ));
-          if($req1->rowCount()!=0){
-            $exist['pseudo']='pseudo';
+          if($req->rowCount()!=0){
+            $exist['matricule']='matricule';
           }
-          $req2=$bdd->prepare('SELECT email from user WHERE email=:email');
-          $req2->execute(array('email'=>$email
-          ));
-          if($req2->rowCount()!=0){
-            $exist['email']='email';
-          }
-          $req1->closeCursor();
-          $req2->closeCursor();
+          $req->closeCursor();
           return $exist;
     	}
-      public function verifyUser($identity,$password){
+      public function verifyUser($prenoms,$matricule){
           $bdd=$this->baseConnection();
-          $req=$bdd->prepare('SELECT id FROM user WHERE (pseudo=:identity OR email=:identity) AND motpass=:password');
+          $req=$bdd->prepare('SELECT matricule FROM etudiant WHERE prenoms=:prenoms AND matricule=:matricule');
           $req->execute(array(
-              'identity'=>$identity,
-              'password'=>$password
+              'prenoms'=>$prenoms,
+              'matricule'=>$matricule
           ));
           return $req->rowCount();
       }
-      public function activateAccount($id,$activation='true'){
-         $bdd=$this->baseConnection();
-         $req=$bdd->prepare('UPDATE user SET activation=:activation WHERE id=:id');
-         $req->execute(array(
-             'activation'=>$activation,
-             'id'=>$id
-         ));
-      }
+
     }

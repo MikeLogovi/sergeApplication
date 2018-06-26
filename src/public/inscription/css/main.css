@@ -32,7 +32,7 @@ a {
   margin-left: -175px;
 }
 
-input[type="text"], input[type="password"],input[type="date"],select,input[type="file"] {
+input[type="text"], input[type="password"],input[type="date"],select,input[type="file"]{
   width: 350px;
   padding: 20px 0px;
   background: transparent;
@@ -43,7 +43,7 @@ input[type="text"], input[type="password"],input[type="date"],select,input[type=
   font-size: 16px;
 }
 input[type=checkbox] {
-  display: none;
+  display: block;
 }
 
 label {

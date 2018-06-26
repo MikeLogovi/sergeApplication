@@ -4,7 +4,7 @@ use App\classes\User\UserManager;
 use App\classes\User\User;
 
     Class Functions{
-      
+
 
             public function not_empty_by_post($fields=[]){
                 if(count($fields)!=0){
@@ -36,8 +36,8 @@ use App\classes\User\User;
                     return true;
                 }
             }
-        
-        
+
+
            public function realy_isset($fields=[]){
                 if(count($fields)!=0){
                     foreach($fields as $field){
@@ -48,57 +48,24 @@ use App\classes\User\User;
                     return false;
                 }
            }
-           public function cleanPseudo($pseudo){
-              return str_replace('','',str_replace('%','',str_replace('&','',$pseudo)));
-           }
-        	public function verifyCode($test,$code){
-        		if($test==$code){
-        			return true;
-        		}
-        	    return false;
-        	}
-        	public function verifyPassword($motpass,$confpass){
-                 if($motpass==$confpass){
+
+        	public function verifyMatricule($matricule,$confmatricule){
+                 if($matricule==$confmatricule){
                  	return true;
                  }
                  return false;
         	}
-        	public function verifyEmail($email){
-        		
-        		if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
-        			return false;
-        		}
-        		return true;
-        	}
-            public function verifyPseudo($pseudo){
-                if(mb_strlen($pseudo)<3){
-                    return false;
-                }
-                return true;
-            }
-            public function generatePseudo($pseudo){
-                 $find=true;
-                 $userManager=new UserManager();
-                 While($find){
-                    $pseudoGenerate=$pseudo.$this->generatePseudoId();
-                     if(!$userManager->read($pseudoGenerate)->rowCount()){
-                        $find=false;
-                     }
-                 }
-                 return $pseudoGenerate;
-            }
-            private function generatePseudoId(){
-                return strtoupper(substr(uniqid()*mt_rand(),0,5));
-            }
-            public function insertDb($pseudo,$email,$motpass){
-                  $user=new User($pseudo,$email,$motpass);
+
+
+            public function insertDb($matricule,$prenoms,$classe,$dateNaissance,$numeroTelephone,$photoDeProfil){
+                  $user=new User($matricule,$prenoms,$classe,$dateNaissance,$numeroTelephone,$photoDeProfil);
                   $userManager=new UserManager();
                   $userManager->create($user);
             }
             public function uploadpicture($pseudo,$email,$motpass,$extension){
                    $token=sha1($pseudo.$email.$motpass);
-                   $picture='src/public/users_pictures/'.$token.'.'.$extension;
-                   move_uploaded_file($_FILES['connectphoto']['tmp_name'],$picture);
+                   $picture='src/public/photo_membre/'.$token.'.'.$extension;
+                   move_uploaded_file($_FILES['photoDeProfil']['tmp_name'],$picture);
                    $userManager=new UserManager();
                    $user=new User($pseudo,$email,$motpass,null,null,$picture,null);
                    $userManager->update($user);
@@ -108,7 +75,7 @@ use App\classes\User\User;
             }
             public function save_input_data(){
                foreach($_POST as $key => $value){
-                  if(!strpos($key, 'pass')){
+                  if(!strpos($key, 'matricule')){
                   $_SESSION['input'][$key]=$value;
                  }
                }
