@@ -1,7 +1,6 @@
 <?php
 
      function homePage(){
-          //require('src/public/acceuilPublic/css/styles-merged.css');
      	require('src/view/acceuil/acceuil.view.php');
      }
      function registration(){
@@ -20,42 +19,12 @@
           $site=new App\classes\site\Site();
      	require('src/view/connexion/connexion.view.php');
      }
-     function activation($pseudo,$token){
-          $site=new App\classes\site\Site();
-          require('src/view/traitement/activation.php');
-     }
+
      function application(){
 
           require('src/view/application/application.view.php');
      }
-     function chating(){
-          require('src/view/partials/initialize.php');
-          require('src/view/application/chat/traitement/ChatManager.php');
-          $chatManager=new ChatManager();
-          $req=$chatManager->getConversation($user->getId());
-          ob_start();
-          require('src/view/application/chat/chat.view.php');
-          $content=ob_get_clean();
-          require('src/view/application/application.view.php');
-     }
-     function coding(){
-         require('src/view/partials/initialize.php');
-          ob_start();
-          require('src/view/application/codage/coding.view.php');
-          $content=ob_get_clean();
-          require('src/view/application/application.view.php');
-     }
-     function codingTreatment(){
-          $site=new App\classes\site\Site();
-          require('src/view/application/codage/traitement/codingTreatment.php');
-     }
-     function codingView(){
-          require('src/view/partials/initialize.php');
-          ob_start();
-          require('src/view/application/codage/codingView.view.php');
-          $content=ob_get_clean();
-          require('src/view/application/application.view.php');
-     }
+
      function forum(){
           require('src/view/partials/initialize.php');
 
@@ -69,6 +38,25 @@
           $site=new App\classes\site\Site();
           require('src/view/application/forum/traitement/forumTreatment.php');
      }
+     function listeEtudiant(){
+          require('src/view/partials/initialize.php');
+
+          ob_start();
+          require('src/view/application/liste_etudiant/listeEtudiant.view.php');
+          $content=ob_get_clean();
+          require('src/view/application/application.view.php');
+     }
+      function listeMessage(){
+          require('src/view/partials/initialize.php');
+
+          ob_start();
+          require('src/view/application/liste_message/listeMessage.view.php');
+          $content=ob_get_clean();
+          require('src/view/application/application.view.php');
+     }
+     function supprimerMessage($numero){
+          require('src/view/traitement/supprimerMessageTreatment.php');
+     }
      function profil(){
           require('src/view/partials/initialize.php');
           ob_start();
@@ -76,10 +64,25 @@
           $content=ob_get_clean();
           require('src/view/application/application.view.php');
      }
-      function profilModify(){
+      function modifProfil(){
           require('src/view/partials/initialize.php');
           ob_start();
-          require('src/view/application/profil/profilModify.view.php');
+          require('src/view/application/modif_profil/modifProfil.view.php');
           $content=ob_get_clean();
           require('src/view/application/application.view.php');
+     }
+     function modifProfilTreatment(){
+
+          require('src/view/traitement/modifProfilTreatment.php');
+
+     }
+     function supprimerProfil(){
+
+          require('src/view/traitement/supprimerProfilTreatment.php');
+
+     }
+     function deconnexion(){
+
+          require('src/view/traitement/deconnexionTreatment.php');
+
      }

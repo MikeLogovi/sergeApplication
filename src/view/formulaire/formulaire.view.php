@@ -17,14 +17,14 @@ $function=new Functions();
 <div class='login'>
   <h2>Inscription</h2>
    <?php require('src/view/partials/errors_form.php');?>
-  <form method='POST' action='formularTreatment'>
+  <form method='POST' action='formularTreatment' enctype="multipart/form-data">
       <input id='matricule' name='matricule' placeholder='Matricule' type='password'>
       <input id='confmatricule' name='confmatricule' placeholder='Reverifier votre matricule' type='password'>
       <input name='prenoms' placeholder='Prenoms' type='text' id='prenom'  <?='value='.$function->get_input('prenoms');?>>
       <select name='classe'  id='classe'<?='value='.$function->get_input('classe');?> >
            <option value='1ere annee'>1ere annee</option>
-           <option value='1ere annee'>2eme annee</option>
-           <option value='1ere annee'>3eme annee</option>
+           <option value='2eme annee'>2eme annee</option>
+           <option value='3eme annee'>3eme annee</option>
       </select><br/>
       <input name='dateNaissance' placeholder='Date de naissance' type='date'  <?='value='.$function->get_input('dateNaissance');?>>
       <input name='numeroTelephone' placeholder='Numéro de téléphone' type='text'  <?='value='.$function->get_input('numeroTelephone');?>>

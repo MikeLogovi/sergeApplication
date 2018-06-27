@@ -17,7 +17,11 @@ use \PDO as PDO;
                     }
                     $_SESSION['user']['matricule']=$req->matricule;
                     $_SESSION['user']['prenoms']=$req->prenoms;
-                    header('Location:application');
+                    $_SESSION['user']['classe']=$req->classe;
+                    $_SESSION['user']['numeroTelephone']=$req->numeroTelephone;
+                    $_SESSION['user']['dateNaissance']=$req->dateNaissance;
+                    $_SESSION['user']['photoDeProfil']=$req->photoDeProfil;
+                    header('Location:forum');
                   }
 
                   else{

@@ -1,18 +1,21 @@
+<?php
+namespace App\view\acceuil;
+use App\view\acceuil\ForumManager;
+use \PDO as PDO;
+$forumManager=new ForumManager();
+$req=$forumManager->getMessage();
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>uiCookies:Pixels &mdash; Free Bootstrap Theme, Free Responsive Bootstrap Website Template</title>
-    <meta name="description" content="Free Bootstrap Theme by uicookies.com">
-    <meta name="keywords" content="free website templates, free bootstrap themes, free template, free bootstrap, free website template">
-
+    <title>ESGIS'S FORUM</title>
     <link href="https://fonts.googleapis.com/css?family=Inconsolata|Rubik:300,400,700,900" rel="stylesheet">
+
     <link rel="stylesheet" href="src/public/acceuil/css/styles-merged.css">
     <link rel="stylesheet" href="src/public/acceuil/css/style.css">
-    <link rel="stylesheet" href="src/public/acceuil/css/custom.css">
-
-    <!--[if lt IE 9]>
+     <!--[if lt IE 9]>
       <script src="js/vendor/html5shiv.min.js"></script>
       <script src="js/vendor/respond.min.js"></script>
     <![endif]-->
@@ -29,11 +32,19 @@
 
         <nav role="navigation" class="probootstrap-nav hidden-xs">
           <ul class="probootstrap-main-nav">
-            <li class="active"><a href="index.html">ACCEUIL</a></li>
-            <li><a href="about.html">PUBLIER UN MESSAGE</a></li>
-             <li><a href="contact.html">GESTION DES MESSAGES</a></li>
-              <li><a href="contact.html">GESTION DES ETUDIANTS</a></li>
-              <li><a href="inscription">S'INSCRIRE</a></li>
+            <?php if(isset($_SESSION['user']['matricule'])):?>
+            <li class="active"><a href="acceuil">ACCEUIL</a></li>
+            <li><a href="forum">PUBLIER UN MESSAGE</a></li>
+            <li><a href="listeMessage">GESTION DES MESSAGES</a></li>
+            <li><a href="listeEtudiant">GESTION DES ETUDIANTS</a></li>
+            <li><a href="inscription">S'INSCRIRE</a></li>
+            <?php else:?>
+            <li class="active"><a href="acceuil">ACCEUIL</a></li>
+            <li><a href="connexion">PUBLIER UN MESSAGE</a></li>
+            <li><a href="connexion">GESTION DES MESSAGES</a></li>
+            <li><a href="connexion">GESTION DES ETUDIANTS</a></li>
+            <li><a href="inscription">S'INSCRIRE</a></li>
+            <?php endif?>
           </ul>
           <div class="extra-text visible-xs">
             <a href="#" class="probootstrap-burger-menu"><i>Menu</i></a>
@@ -45,9 +56,11 @@
             </ul>
           </div>
         </nav>
+        <?php require('src/view/partials/errors_form.php');?>
     </div>
   </header>
   <!-- END: header -->
+
   <div class="probootstrap-main-content">
     <section class="probootstrap-slider flexslider">
       <ul class="slides">
@@ -58,7 +71,7 @@
               <div class="col-md-10 col-md-offset-1">
                 <div class="probootstrap-slider-text text-center">
                   <h1 class="probootstrap-heading probootstrap-animate mb20" style="color:rgba(255,100,255,1)">Bienvenue sur le forum d'ESGIS!</h1>
-                  <p class="probootstrap-animate"><a style="background-color:rgba(255,100,255,1)" href="#" class="btn btn-ghost btn-ghost-white">CONNECTE TOI</a></p>
+                  <p class="probootstrap-animate"><a style="background-color:rgba(255,100,255,1)" href="connexion" class="btn btn-ghost btn-ghost-white">CONNECTE TOI</a></p>
                 </div>
               </div>
             </div>
@@ -72,7 +85,7 @@
                 <div class="probootstrap-slider-text text-center">
                   <h1 class="probootstrap-heading probootstrap-animate mb20" style="color:rgba(0,100,255,1)">DE BELLES DISCUSSIONS T'ATTENDENT!</h1>
 
-                  <p class="probootstrap-animate"><a style="background-color:rgba(0,100,255,1)" href="#" class="btn btn-ghost btn-ghost-white">Connecte toi</a></p>
+                  <p class="probootstrap-animate"><a style="background-color:rgba(0,100,255,1)" href="connexion" class="btn btn-ghost btn-ghost-white">Connecte toi</a></p>
                 </div>
               </div>
             </div>
@@ -94,57 +107,16 @@
           <div class="row">
             <div class="col-md-12 probootstrap-animate">
               <div class="owl-carousel owl-carousel-testimony owl-carousel-fullwidth mt50">
-                <div class="item">
-
-                  <div class="probootstrap-testimony-wrap">
-                    <figure>
-                      <img src="src/public/acceuil/img/person_1.jpg" alt="Free Bootstrap Template by uicookies.com">
-                    </figure>
-                    <blockquote class="quote">&ldquo;Salut c'est comment?.&rdquo; <cite class="author">&mdash; Mike LOGOVI <br> <span>Etudiant en 2eme annee</span></cite></blockquote>
-                  </div>
-
-                </div>
+                <?php while($data=$req->fetch(PDO::FETCH_OBJ)){?>
                 <div class="item">
                   <div class="probootstrap-testimony-wrap">
                     <figure>
-                      <img src="src/public/acceuil/img/person_2.jpg" alt="Free Bootstrap Template by uicookies.com">
+                      <img src="<?=$data->photoDeProfil;?>" alt="Etudiant">
                     </figure>
-                    <blockquote class="quote">&ldquo;Oui Mike c'est comment?.&rdquo; <cite class="author">&mdash;AFANGBEGNON Serge <br> <span>Etudiant en 1ere annee</span></cite></blockquote>
+                    <blockquote class="quote">&ldquo;<?=$data->contenu;?>.&rdquo; <cite class="author">&mdash;<?=$data->prenoms;?> <br> <span>Etudiant en <?=$data->classe;?></span></cite></blockquote>
                   </div>
                 </div>
-                <div class="item">
-                  <div class="probootstrap-testimony-wrap">
-                    <figure>
-                      <img src="src/public/acceuil/img/person_3.jpg" alt="Free Bootstrap Template by uicookies.com">
-                    </figure>
-                    <blockquote class="quote">&ldquo;I think design would be better if designers were much more skeptical about its applications. If you believe in the potency of your craft, where you choose to dole it out is not something to take lightly.&rdquo; <cite class="author">&mdash; Frank Chimero <br> <span>Creative Director at Twitter</span></cite></blockquote>
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="probootstrap-testimony-wrap">
-                    <figure>
-                      <img src="src/public/acceuil/img/person_3.jpg" alt="Free Bootstrap Template by uicookies.com">
-                    </figure>
-                    <blockquote class="quote">&ldquo;I think design would be better if designers were much more skeptical about its applications. If you believe in the potency of your craft, where you choose to dole it out is not something to take lightly.&rdquo; <cite class="author">&mdash; Frank Chimero <br> <span>Creative Director at Twitter</span></cite></blockquote>
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="probootstrap-testimony-wrap">
-                    <figure>
-                      <img src="src/public/acceuil/img/person_3.jpg" alt="Free Bootstrap Template by uicookies.com">
-                    </figure>
-                    <blockquote class="quote">&ldquo;I think design would be better if designers were much more skeptical about its applications. If you believe in the potency of your craft, where you choose to dole it out is not something to take lightly.&rdquo; <cite class="author">&mdash; Frank Chimero <br> <span>Creative Director at Twitter</span></cite></blockquote>
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="probootstrap-testimony-wrap">
-                    <figure>
-                      <img src="src/public/acceuil/img/person_3.jpg" alt="Free Bootstrap Template by uicookies.com">
-                    </figure>
-                    <blockquote class="quote">&ldquo;I think design would be better if designers were much more skeptical about its applications. If you believe in the potency of your craft, where you choose to dole it out is not something to take lightly.&rdquo; <cite class="author">&mdash; Frank Chimero <br> <span>Creative Director at Twitter</span></cite></blockquote>
-                  </div>
-                </div>
-
+              <?php }?>
               </div>
             </div>
           </div>
@@ -162,7 +134,7 @@
               <div class="probootstrap-footer-widget">
               <h3>A PROPOS DE NOUS</h3>
               <p>ESGIS est une école supérieure d'informatique située à kodjoviakopé<br/>Lomé-TOGO.</p>
-              <p><a href="#" class="btn btn-ghost btn-ghost-white btn-sm">SE CONNECTER</a></p>
+              <p><a href="connexion" class="btn btn-ghost btn-ghost-white btn-sm">SE CONNECTER</a></p>
               </div>
             </div>
             <div class="col-md-4">
@@ -202,7 +174,7 @@
 
   <script src="src/public/acceuil/js/scripts.min.js"></script>
   <script src="src/public/acceuil/js/main.min.js"></script>
-  <script src="src/public/acceuil/js/custom.js"></script>
+
 
   </body>
 </html>
