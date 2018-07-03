@@ -28,7 +28,7 @@ function postMessage(){
 }
 $(function(){
 
-  window.setTimeout(getMessage,timeout);
+    window.setTimeout(getMessage,timeout);
    window.setInterval(getMessage,reloadTime);
   //$("#f-main").animate({"scrollTop":$("#f-main").height()}, "slow");
   $('body').append("<audio id='beep'><source type='audio/mpeg' src='src/view/application/forum/forum_style/son2.mp3' >");

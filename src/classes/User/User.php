@@ -1,69 +1,60 @@
 <?php
 namespace App\classes\User;
     Class User{
-    	protected $matricule;
-    	protected $prenoms;
-        protected $classe;
-        protected $dateNaissance;
-        protected $numeroTelephone;
-         protected $photoDeProfil;
-    	public function __construct($matricule=null,$prenoms=null,$classe=null,$dateNaissance=null,$numeroTelephone=null,$photoDeProfil=null){
-            if($matricule!=null){
-                $this->setMatricule($matricule);
+    	protected $id;
+    	protected $userName;
+        protected $email;
+        protected $motpass;
+        protected $photoDeProfil;
+    	public function __construct($id=null,$userName=null,$email=null,$motpass=null,$photoDeProfil=null){
+            if($id!=null){
+                $this->setId($id);
             }
-            if($prenoms!=null){
-                $this->setPrenoms($prenoms);
+            if($userName!=null){
+                $this->setUserName($userName);
             }
-            if($classe!=null){
-                $this->setClasse($classe);
+            if($email!=null){
+                $this->setEmail($email);
             }
 
             if($photoDeProfil!=null){
                 $this->setPhotoDeProfil($photoDeProfil);
             }
-            if($dateNaissance!=null){
-                $this->setDateNaissance($dateNaissance);
-            }
-            if($numeroTelephone!=null){
-                $this->setNumeroTelephone($numeroTelephone);
+            if($motpass!=null){
+                $this->setMotpass($motpass);
             }
 
         }
-        public function setMatricule($matricule){
-             $this->matricule=$matricule;
+        public function setId($id){
+             $this->id=$id;
         }
-    	public function getMatricule(){
-            return $this->matricule;
+    	public function getId(){
+            return $this->id;
     	}
-    	public function getPrenoms(){
-    		return $this->prenoms;
+    	public function getUserName(){
+    		return $this->userName;
     	}
-    	public function setPrenoms($prenoms){
-    		$this->prenoms=$prenoms;
+    	public function setUserName($userName){
+    		$this->userName=$userName;
     	}
-    	public function getClasse(){
-    		return $this->classe;
+    	public function getEmail(){
+    		return $this->email;
     	}
-    	public function setClasse($classe){
-    		$this->classe=$classe;
+    	public function setEmail($email){
+    		$this->email=$email;
     	}
-    	public function getNumeroTelephone(){
-    		return $this->numeroTelephone;
-    	}
-    	public function setNumeroTelephone($numeroTelephone){
-    		$this->numeroTelephone=$numeroTelephone;
-    	}
+
         public function getPhotoDeProfil(){
             return $this->photoDeProfil;
         }
         public function setPhotoDeProfil($photoDeProfil){
             $this->photoDeProfil=$photoDeProfil;
         }
-         public function getDateNaissance(){
-            return $this->dateNaissance;
+         public function getMotpass(){
+            return $this->motpass;
         }
-        public function setDateNaissance($dateNaissance){
-            $this->dateNaissance=$dateNaissance;
+        public function setMotpass($motpass){
+            $this->motpass=$motpass;
         }
 
     }

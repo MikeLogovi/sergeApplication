@@ -10,7 +10,7 @@ $req=$forumManager->getMessage();
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ESGIS'S FORUM</title>
+    <title><?=$site::WEB_SITE_NAME;?>'S FORUM</title>
     <link href="https://fonts.googleapis.com/css?family=Inconsolata|Rubik:300,400,700,900" rel="stylesheet">
 
     <link rel="stylesheet" href="src/public/acceuil/css/styles-merged.css">
@@ -25,24 +25,24 @@ $req=$forumManager->getMessage();
 
   <header role="banner" class="probootstrap-header">
     <div class="container">
-        <a href="index.html" class="probootstrap-logo">ESGIS<span>.</span></a>
+        <a href="index.html" class="probootstrap-logo"><?=$site::WEB_SITE_NAME;?><span>.</span></a>
 
         <a href="#" class="probootstrap-burger-menu visible-xs" ><i>Menu</i></a>
         <div class="mobile-menu-overlay"></div>
 
         <nav role="navigation" class="probootstrap-nav hidden-xs">
           <ul class="probootstrap-main-nav">
-            <?php if(isset($_SESSION['user']['matricule'])):?>
+            <?php if(isset($_SESSION['user']['id'])):?>
             <li class="active"><a href="acceuil">ACCEUIL</a></li>
             <li><a href="forum">PUBLIER UN MESSAGE</a></li>
             <li><a href="listeMessage">GESTION DES MESSAGES</a></li>
-            <li><a href="listeEtudiant">GESTION DES ETUDIANTS</a></li>
-            <li><a href="inscription">S'INSCRIRE</a></li>
+            <li><a href="listeMembre">GESTION DES MEMBRES</a></li>
+
             <?php else:?>
             <li class="active"><a href="acceuil">ACCEUIL</a></li>
             <li><a href="connexion">PUBLIER UN MESSAGE</a></li>
             <li><a href="connexion">GESTION DES MESSAGES</a></li>
-            <li><a href="connexion">GESTION DES ETUDIANTS</a></li>
+            <li><a href="connexion">GESTION DES MEMBRES</a></li>
             <li><a href="inscription">S'INSCRIRE</a></li>
             <?php endif?>
           </ul>
@@ -70,7 +70,7 @@ $req=$forumManager->getMessage();
             <div class="row">
               <div class="col-md-10 col-md-offset-1">
                 <div class="probootstrap-slider-text text-center">
-                  <h1 class="probootstrap-heading probootstrap-animate mb20" style="color:rgba(255,100,255,1)">Bienvenue sur le forum d'ESGIS!</h1>
+                  <h1 class="probootstrap-heading probootstrap-animate mb20" style="color:rgba(255,100,255,1)">Bienvenue sur le forum de <?=$site::WEB_SITE_NAME;?>!</h1>
                   <p class="probootstrap-animate"><a style="background-color:rgba(255,100,255,1)" href="connexion" class="btn btn-ghost btn-ghost-white">CONNECTE TOI</a></p>
                 </div>
               </div>
@@ -83,9 +83,14 @@ $req=$forumManager->getMessage();
             <div class="row">
               <div class="col-md-10 col-md-offset-1">
                 <div class="probootstrap-slider-text text-center">
-                  <h1 class="probootstrap-heading probootstrap-animate mb20" style="color:rgba(0,100,255,1)">DE BELLES DISCUSSIONS T'ATTENDENT!</h1>
-
-                  <p class="probootstrap-animate"><a style="background-color:rgba(0,100,255,1)" href="connexion" class="btn btn-ghost btn-ghost-white">Connecte toi</a></p>
+                  <h1 class="probootstrap-heading probootstrap-animate mb20" style="color:rgba(0,100,255,1)">
+                    des discussions t'attendent!
+                  </h1>
+                   <p class="probootstrap-animate">
+                    <a style="background-color:rgba(0,100,255,1)" href="connexion" class="btn btn-ghost btn-ghost-white">
+                       Connecte toi
+                    </a>
+                   </p>
                 </div>
               </div>
             </div>
@@ -93,6 +98,7 @@ $req=$forumManager->getMessage();
         </li>
       </ul>
     </section>
+    <?php if($req->rowCount()!=0):?>
     <section class="probootstrap-section probootstrap-bg-white">
       <div class="container-fluid">
         <div class="section-heading text-center">
@@ -113,7 +119,7 @@ $req=$forumManager->getMessage();
                     <figure>
                       <img src="<?=$data->photoDeProfil;?>" alt="Etudiant">
                     </figure>
-                    <blockquote class="quote">&ldquo;<?=$data->contenu;?>.&rdquo; <cite class="author">&mdash;<?=$data->prenoms;?> <br> <span>Etudiant en <?=$data->classe;?></span></cite></blockquote>
+                    <blockquote class="quote">&ldquo;<?=$data->contenu;?>.&rdquo; <cite class="author">&mdash;<?=$data->userName;?></cite></blockquote>
                   </div>
                 </div>
               <?php }?>
@@ -123,6 +129,7 @@ $req=$forumManager->getMessage();
           <!-- END row -->
         </div>
       </section>
+       <?php endif;?>
     </div>
 
     <div class="probootstrap-footer-spacer"></div>
@@ -133,11 +140,11 @@ $req=$forumManager->getMessage();
             <div class="col-md-4">
               <div class="probootstrap-footer-widget">
               <h3>A PROPOS DE NOUS</h3>
-              <p>ESGIS est une école supérieure d'informatique située à kodjoviakopé<br/>Lomé-TOGO.</p>
+              <p>BLUEBEARD est un forum de partage de sujet de discussions de tout genre</p>
               <p><a href="connexion" class="btn btn-ghost btn-ghost-white btn-sm">SE CONNECTER</a></p>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4" style='visibility:hidden;'>
               <div style='color:white' class="probootstrap-link-wrap probootstrap-footer-widget">
                 <h3>ACTIVITES</h3>
                 <ul >
@@ -161,7 +168,7 @@ $req=$forumManager->getMessage();
             </div>
           </div>
           <div class="row">
-            <p class="text-center">&copy; ESGIS'S CORPORATION. Designed by <a href="#">AFANGBEGNON Serge</a><i class="icon-heart2"></i></p>
+            <p class="text-center">&copy; <?=$site::WEB_SITE_NAME;?>'S CORPORATION. Designed by <a href="#"><?=$site::WEB_SITE_DEVELOPPER;?></a><i class="icon-heart2"></i></p>
           </div>
         </div>
       </div>

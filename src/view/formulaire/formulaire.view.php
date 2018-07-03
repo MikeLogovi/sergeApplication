@@ -2,6 +2,9 @@
 namespace App\view\formulaire;
 use App\classes\inscription\Functions;
 $function=new Functions();
+if(isset($_SESSION['user']['id'])){
+      header('Location:acceuil');
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,17 +21,14 @@ $function=new Functions();
   <h2>Inscription</h2>
    <?php require('src/view/partials/errors_form.php');?>
   <form method='POST' action='formularTreatment' enctype="multipart/form-data">
-      <input id='matricule' name='matricule' placeholder='Matricule' type='password'>
-      <input id='confmatricule' name='confmatricule' placeholder='Reverifier votre matricule' type='password'>
-      <input name='prenoms' placeholder='Prenoms' type='text' id='prenom'  <?='value='.$function->get_input('prenoms');?>>
-      <select name='classe'  id='classe'<?='value='.$function->get_input('classe');?> >
-           <option value='1ere annee'>1ere annee</option>
-           <option value='2eme annee'>2eme annee</option>
-           <option value='3eme annee'>3eme annee</option>
-      </select><br/>
-      <input name='dateNaissance' placeholder='Date de naissance' type='date'  <?='value='.$function->get_input('dateNaissance');?>>
-      <input name='numeroTelephone' placeholder='Numéro de téléphone' type='text'  <?='value='.$function->get_input('numeroTelephone');?>>
-      <br/>Photo de profil<br/><input name='photoDeProfil' placeholder='Photo de profil' type='file'  <?='value='.$function->get_input('photoDeProfil');?>><br/><br/><br/>
+
+      <input name='username' placeholder="Nom d'utilisateur" type='text' id='username'  <?='value='.$function->get_input('username');?>>
+
+      <input name='email' placeholder='Adresse email' type='email'  <?='value='.$function->get_input('email');?>>
+      <input id='motpass' name='motpass' placeholder='Mot de passe' type='password'>
+      <input id='confmotpass' name='confmotpass' placeholder='Reverifier votre mot de passe' type='password'>
+
+      <br/>Photo de profil<br/><input name='photoDeProfil' type='file'/><br/><br/><br/>
       <input class='animated' type='submit' value="S'inscrire">
   </form>
   <a class='forgot' href='connexion'>Avez vous déjà un compte?</a>

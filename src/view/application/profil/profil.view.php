@@ -29,20 +29,15 @@
                        alt="User profile picture">
                 </div>
 
-                <h3 class="profile-username text-center"><?=$_SESSION['user']['prenoms'];?></h3>
+                <h3 class="profile-username text-center"><?=$_SESSION['user']['username'];?></h3>
 
-                <p class="text-muted text-center">Etudiant à ESGIS</p>
+                <p class="text-muted text-center">Membre de BLUEBEARD</p>
 
                 <ul class="list-group list-group-unbordered mb-3">
                   <li class="list-group-item">
-                    <b>Classe</b> <a class="float-right"><?=$_SESSION['user']['classe'];?></a>
+                    <b>Adresse e-mail</b> <a class="float-right"><?=$_SESSION['user']['email'];?></a>
                   </li>
-                  <li class="list-group-item">
-                    <b>Date de naissance</b> <a class="float-right"<?=$_SESSION['user']['dateNaissance'];?></a>
-                  </li>
-                  <li class="list-group-item">
-                    <b>Numero de telephone</b> <a class="float-right"><?=$_SESSION['user']['numeroTelephone'];?></a>
-                  </li>
+
                 </ul>
 
                 <a href="modifProfil" class="btn btn-primary btn-block"><b>Modifier mon profil</b></a>

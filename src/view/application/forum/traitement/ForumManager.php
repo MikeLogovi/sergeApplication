@@ -2,20 +2,25 @@
 require('Managerf.php');
 
        Class ForumManager extends Managerf{
-             public function postMessage($matricule,$contenu,$titre){
+             public function postMessage($id,$contenu,$titre){
                   $bdd=$this->baseConnection();
-                  $req=$bdd->prepare('INSERT INTO message(matriculeEtudiant,titre,contenu,datePublication) VALUES(:matricule,:titre,:contenu,NOW())');
+                  $req=$bdd->prepare('INSERT INTO message(idMembre,titre,contenu,datePublication) VALUES(:id,:titre,:contenu,NOW())');
                   $req->execute(array(
-                  'matricule'=>$matricule,
+                  'id'=>$id,
                   'titre'=>htmlspecialchars($titre),
-                  'contenu'=>htmlspecialchars($contenu)
+                  'contenu'=>$contenu
                   ));
                   return $req;
              }
              public function getMessage(){
                    $bdd=$this->baseConnection();
-                   $req=$bdd->query("SELECT etudiant.matricule, message.titre,etudiant.photoDeProfil,etudiant.prenoms,message.contenu,message.datePublication FROM etudiant,message WHERE etudiant.matricule=message.matriculeEtudiant ORDER BY message.id DESC");
+                   $req=$bdd->query("SELECT membre.id, message.titre,membre.photoDeProfil,membre.userName,message.contenu,message.datePublication FROM membre,message WHERE membre.id=message.idMembre ORDER BY message.id DESC");
                    return $req;
+             }
+             public function getLastMessages(){
+                     $bdd=$this->baseConnection();
+                      $req=$bdd->query("SELECT membre.id,membre.photoDeProfil,membre.userName,message.contenu,message.datePublication FROM membre,message WHERE membre.id=message.idMembre ORDER BY message.id DESC LIMIT 3");
+                     return $req;
              }
              public function getNbMessage(){
                    $bdd=$this->baseConnection();

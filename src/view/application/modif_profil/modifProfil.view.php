@@ -32,24 +32,23 @@ $function=new Functions();
               <form role="form" method='POST' action='modifProfilTreatment' enctype="multipart/form-data">
                 <div class="card-body">
                   <div class="form-group">
-                    <label for="prenoms">Prénoms</label>
-                    <input type="text" class="form-control" id="prenoms" name="prenomsModif" placeholder="Votre prénom" <?='value='.$function->get_input('prenomsModif');?>>
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" class="form-control" id="username" name="usernameModif" placeholder="Votre prénom" <?='value='.$function->get_input('usernameModif');?>>
                   </div>
-                 <div class="form-group">
-                    <label>Classe</label>
-                    <select class="form-control" name='classeModif' id='classe'>
-                      <option value='1ere annee'>1ere annee</option>
-                      <option value='2eme annee'>2eme annee</option>
-                      <option value='3eme annee'>3eme annee</option>
-                    </select>
-                  </div>
+
                    <div class="form-group">
-                    <label for="dateNaissance">Date de naissance</label>
-                    <input type="date" class="form-control" name="dateNaissanceModif" id="dateNaissance" <?='value='.$function->get_input('dateNaissanceModif');?>>
+                    <label for="email">Adresse e-mail</label>
+                    <input type="email" class="form-control" name="emailModif" id="email" <?='value='.$function->get_input('emailModif');?>>
                   </div>
+
+                  <div class="form-group">
+                    <label for="oldmotpass">Mot de passe actuel</label>
+                    <input type="password" class="form-control" id="oldmotpass" name="oldmotpassModif" <?='value='.$function->get_input('oldmotpassModif');?>>
+                  </div>
+
                    <div class="form-group">
-                    <label for="numeroTelephone">Numéro de telephone</label>
-                    <input type="text" class="form-control" id="numeroTelephone" name="numeroTelephoneModif" placeholder="+22893575268" <?='value='.$function->get_input('numeroTelephoneModif');?>>
+                    <label for="newmotpass">Nouveau Mot de passe</label>
+                    <input type="password" class="form-control" id="newmotpass" name="newmotpassModif"<?='value='.$function->get_input('newmotpassModif');?>>
                   </div>
                   <div class="form-group">
                     <label for="photoDeProfil">Photo de profil</label>

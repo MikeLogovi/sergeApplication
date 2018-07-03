@@ -4,8 +4,21 @@ require('src/controller/frontend.php');
 require('vendor/autoload.php');
 
 $router=new App\Router\Router($_GET['url']);
+ if(!empty($_COOKIE['username']) AND !empty($_COOKIE['id'])){
+       $_SESSION['user']['id']=$_COOKIE['id'];
+       $_SESSION['user']['username']=$_COOKIE['username'];
+       $_SESSION['user']['email']=$_COOKIE['email'];
+       $_SESSION['user']['motpass']=$_COOKIE['motpass'];
+       $_SESSION['user']['photoDeProfil']=$_COOKIE['photoDeProfil'];
+       $router->get('/',function(){forum();}) ;
+ }
+ else{
+       $router->get('/',function(){homePage();});
+ }
 
-$router->get('/',function(){homePage();});
+
+
+
 
 $router->get('/acceuil',function(){homePage();});
 
@@ -24,8 +37,8 @@ $router->get('/application',function(){ application();});
 $router->get('/forum',function(){ forum();});
 $router->post('/forum',function(){ forum();});
 
-$router->get('/listeEtudiant',function(){ listeEtudiant();});
-$router->post('/listeEtudiant',function(){ listeEtudiant();});
+$router->get('/listeMembre',function(){ listeMembre();});
+$router->post('/listeMembre',function(){ listeMembre();});
 
 $router->get('/listeMessage',function(){ listeMessage();});
 $router->post('/listeMessage',function(){ listeMessage();});
@@ -44,6 +57,8 @@ $router->post('/modifProfilTreatment',function(){ modifProfilTreatment();});
 
 $router->get('/supprimerProfil',function(){ supprimerProfil();});
 $router->post('/supprimerProfil',function(){ supprimerProfil();});
+
+
 
 $router->get('/deconnexion',function(){ deconnexion();});
 $router->post('/deconnexion',function(){ deconnexion();});

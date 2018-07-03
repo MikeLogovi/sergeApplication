@@ -42,12 +42,12 @@ $req=$forumManager->getMessage();
                 <tbody>
                 <?php while($data=$req->fetch(PDO::FETCH_OBJ)){?>
                   <tr>
-                    <td><?=$data->prenoms;?></td>
+                    <td><?=$data->userName;?></td>
                     <td><?=$data->titre;?></td>
                     <td><?=$data->contenu;?></td>
                     <td><?=$data->datePublication;?></td>
                     <td>
-                <?php if($data->matricule==$_SESSION['user']['matricule']):?>
+                <?php if($data->idMembre==$_SESSION['user']['id']):?>
                 <div class="margin">
                   <div class="btn-group">
                     <a href='#'  class="btn btn-success">Modifier</a>
@@ -56,7 +56,7 @@ $req=$forumManager->getMessage();
                     <a href='listeMessage/supprimer/<?=$data->id;?>' class="btn btn-danger">Supprimer</a>
                   </div>
                 </div>
-              <?php endif?>
+              <?php endif;?>
                     </td>
                   </tr>
                 <?php } ?>

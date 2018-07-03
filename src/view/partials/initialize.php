@@ -2,11 +2,16 @@
 
           $site=new App\classes\site\Site();
           $userManager=new App\classes\User\UserManager();
-          $matricule= $_SESSION['user']['matricule'];
-          $person=$userManager->read($matricule)->fetch(PDO::FETCH_OBJ);
-          $user = new App\classes\User\User($person->matricule,$person->prenoms,$person->classe,$person->dateNaissance,$person->numeroTelephone,$person->photoDeProfil);
+          $username= $_SESSION['user']['username'];
+
+          $person=$userManager->read($username)->fetch(PDO::FETCH_OBJ);
+
+
+          $user = new App\classes\User\User($person->id,$person->userName,$person->email,$person->motpass,$person->photoDeProfil);
+
           $userManager->update($user);
-          $user->setMatricule($person->matricule);
+
+          $user->setId($person->id);
           $_SESSION['user']['photoDeProfil']=$user->getPhotoDeProfil();
 
 

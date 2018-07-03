@@ -7,27 +7,26 @@ use \PDO as PDO;
 
     	public function create(User $user){
            $bdd=$this->baseConnection();
-           $req=$bdd->prepare('INSERT INTO etudiant(matricule,prenoms,classe,dateNaissance,numeroTelephone,photoDeProfil) VALUES(:matricule,:prenoms,:classe,:dateNaissance,:numeroTelephone,:photoDeProfil)');
+           $req=$bdd->prepare('INSERT INTO membre(userName,email,motpass,photoDeProfil) VALUES(:userName,:email,:motpass,:photoDeProfil)');
            $req->execute(array(
-              'matricule'=>$user->getMatricule(),
-              'prenoms'=>$user->getPrenoms(),
-              'classe'=>$user->getClasse(),
-              'dateNaissance'=>$user->getDateNaissance(),
-              'numeroTelephone'=>$user->getNumeroTelephone(),
+
+              'userName'=>$user->getUserName(),
+              'email'=>$user->getEmail(),
+              'motpass'=>$user->getMotpass(),
               'photoDeProfil'=>$user->getPhotoDeProfil()==null?'src/public/photo_membre/anonyme.jpg':$user->getPhotoDeProfil()
            ));
     	}
-    	public function read($matricule){
+    	public function read($username){
            $bdd=$this->baseConnection();
-           $req=$bdd->prepare('SELECT * FROM etudiant WHERE matricule=:matricule');
+           $req=$bdd->prepare('SELECT * FROM membre WHERE userName=:username');
            $req->execute(array(
-            'matricule'=>$matricule
+            'username'=>$username
            )
            );
            return $req;
     	}
     	public function update(User $user,$id=null){
-          $tab_user=array('matricule'=>$user->getMatricule(),'prenoms'=>$user->getPrenoms(),'classe'=>$user->getClasse(),'dateNaissance'=>$user->getDateNaissance(),'numeroTelephone'=>$user->getnumeroTelephone(),'photoDeProfil'=>$user->getPhotoDeProfil());
+          $tab_user=array('userName'=>$user->getUserName(),'email'=>$user->getEmail(),'motpass'=>$user->getMotpass(),'photoDeProfil'=>$user->getPhotoDeProfil());
          // var_dump($tab_user);
           //var_dump(get_class_methods(get_class($user)));
 
@@ -36,130 +35,125 @@ use \PDO as PDO;
             $ucattr=ucfirst($attribute);
             $method1='get'.$ucattr;
             //var_dump($method1);
-           try{
-            if(method_exists(get_class($user), $method1)){
-              //echo "Parfait";
-              //die();
-              if($user->$method1()!=null){
-                 $method2='set'.$ucattr;
-                 if(method_exists(get_class($user),$method2)){
-                   $user->$method2($user->$method1());
-                   $method3='update'.$ucattr;
-                   if(method_exists($this, $method3)){
-                    if($user->getMatricule()!=null)
-                      {
-                         $req=$this->read($user->getMatricule())->fetch(PDO::FETCH_OBJ);
-                         $this->$method3($user->$method1(),$req->matricule);
-                      }
-                      else{
-                         $this->$method3($user->$attribute,$id);
-                      }
+                 try{
+                  if(method_exists(get_class($user), $method1)){
+                    //echo "Parfait";
+                    //die();
+                    if($user->$method1()!=null){
+                       $method2='set'.$ucattr;
+                       if(method_exists(get_class($user),$method2)){
+                         $user->$method2($user->$method1());
+                         $method3='update'.$ucattr;
+                         if(method_exists($this, $method3)){
+                          if($user->getId()!=null)
+                            {
+                               $req=$this->read($user->getUserName())->fetch(PDO::FETCH_OBJ);
+                               $this->$method3($user->$method1(),$req->id);
+                            }
+                            else{
+                               $this->$method3($user->$attribute,$id);
+                            }
 
-                   }
-                 }
-              }
-            }
-            else{
-              echo "ImParfait";
-              die();
-            }
-          }catch(Exception $e){
-                die("Erreur ".$e->getMessage());
+                         }
+                       }
+                    }
+                  }
+                  else{
+                    echo "ImParfait";
+                    die();
+                  }
+                }catch(Exception $e){
+                      die("Erreur ".$e->getMessage());
+                }
           }
-        }
     	}
 
-      public function updateNumeroTelephone($numeroTelephone,$matricule){
+
+
+      public function updateId($new,$old){
         $bdd=$this->baseConnection();
-        $req=$bdd->prepare('UPDATE etudiant SET numeroTelephone=:numeroTelephone WHERE matricule=:matricule');
-        $req->execute(array(
-             'numeroTelephone'=>$numeroTelephone,
-             'matricule'=>$matricule
-        ));
-      }
-      public function updateMatricule($new,$old){
-        $bdd=$this->baseConnection();
-        $req=$bdd->prepare('UPDATE etudiant SET matricule=:new WHERE matricule=:old');
+        $req=$bdd->prepare('UPDATE membre SET id=:new WHERE id=:old');
         $req->execute(array(
              'new'=>$new,
              'old'=>$old
         ));
       }
 
-       public function updateClasse($classe,$matricule){
+       public function updateEmail($email,$id){
         $bdd=$this->baseConnection();
-        $req=$bdd->prepare('UPDATE etudiant SET classe=:classe WHERE matricule=:matricule');
+        $req=$bdd->prepare('UPDATE membre SET email=:email WHERE id=:id');
         $req->execute(array(
-             'classe'=>$classe,
-             'matricule'=>$matricule
+             'email'=>$email,
+             'id'=>$id
         ));
       }
 
-      public function updatePrenoms($prenoms,$matricule){
+      public function updateUserName($userName,$id){
         $bdd=$this->baseConnection();
-        $req=$bdd->prepare('UPDATE etudiant SET prenoms=:prenoms WHERE matricule=:matricule');
+        $req=$bdd->prepare('UPDATE membre SET userName=:userName WHERE id=:id');
         $req->execute(array(
-             'prenoms'=>$prenoms,
-             'matricule'=>$matricule
+             'userName'=>$userName,
+             'id'=>$id
         ));
       }
 
-      public function updateDateNaissance($dateNaissance,$matricule){
+      public function updateMotpass($motpass,$id){
         $bdd=$this->baseConnection();
-        $req=$bdd->prepare('UPDATE etudiant SET dateNaissance=:dateNaissance WHERE matricule=:matricule');
+        $req=$bdd->prepare('UPDATE membre SET motpass=:motpass WHERE id=:id');
         $req->execute(array(
-             'dateNaissance'=>$dateNaissance,
-             'matricule'=>$matricule
+             'motpass'=>$motpass,
+             'id'=>$id
         ));
       }
 
-      public function updatePhotoDeProfil($photoDeProfil,$matricule){
+      public function updatePhotoDeProfil($photoDeProfil,$id){
         $bdd=$this->baseConnection();
-        $req=$bdd->prepare('UPDATE etudiant SET photoDeProfil=:photoDeProfil WHERE matricule=:matricule');
+        $req=$bdd->prepare('UPDATE membre SET photoDeProfil=:photoDeProfil WHERE id=:id');
         $req->execute(array(
              'photoDeProfil'=>$photoDeProfil,
-             'matricule'=>$matricule
+             'id'=>$id
         ));
       }
 
-    	public function delete($matricule){
+    	public function delete($id){
            $bdd=$this->baseConnection();
-           $req1=$bdd->prepare('DELETE FROM etudiant WHERE matricule=:matricule');
+           $req1=$bdd->prepare('DELETE FROM membre WHERE id=:id');
            $req1->execute(array(
-            'matricule'=>$matricule
+            'id'=>$id
           ));
-           $req2=$bdd->prepare('DELETE FROM message WHERE matriculeEtudiant=:matricule');
+           $req2=$bdd->prepare('DELETE FROM message WHERE idMembre=:id');
            $req2->execute(array(
-            'matricule'=>$matricule
+            'id'=>$id
           ));
 
            return $req1;
     	}
     	public function getList(){
           $bdd=$this->baseConnection();
-          $req=$bdd->query('SELECT * FROM etudiant');
+          $req=$bdd->query('SELECT * FROM membre');
           return $req;
 
     	}
-    	public function userNotAlreadyExist($matricule){
+    	public function userNotAlreadyExist($username){
           $exist=[];
           $bdd=$this->baseConnection();
-          $req=$bdd->prepare('SELECT matricule from etudiant WHERE matricule=:matricule');
+          $req=$bdd->prepare('SELECT userName from membre WHERE userName=:username');
           $req->execute(array(
-            'matricule'=>$matricule
+            'username'=>$username
           ));
           if($req->rowCount()!=0){
-            $exist['matricule']='matricule';
+            $exist['username']='username';
           }
           $req->closeCursor();
           return $exist;
     	}
-      public function verifyUser($prenoms,$matricule){
+      public function verifyUser($userName,$motpass){
           $bdd=$this->baseConnection();
-          $req=$bdd->prepare('SELECT matricule FROM etudiant WHERE prenoms=:prenoms AND matricule=:matricule');
+          $req=$bdd->prepare('SELECT id FROM membre WHERE userName=:userName AND motpass=:motpass');
           $req->execute(array(
-              'prenoms'=>$prenoms,
-              'matricule'=>$matricule
+              'userName'=>$userName,
+              'motpass'=>$motpass
+
           ));
           return $req->rowCount();
       }

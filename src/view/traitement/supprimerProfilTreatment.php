@@ -4,7 +4,7 @@ use App\classes\inscription\Functions;
 use App\classes\User\UserManager;
 use \PDO as PDO;
 $userManager = new UserManager();
-if($userManager->delete($_SESSION['user']['matricule'])){
+if($userManager->delete($_SESSION['user']['id'])){
   $_SESSION['errors']['deleteUser']="Compte supprimé avec succès";
   session_destroy();
   header('Location:acceuil');

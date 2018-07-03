@@ -1,6 +1,7 @@
 <?php
 
      function homePage(){
+          $site=new App\classes\site\Site();
      	require('src/view/acceuil/acceuil.view.php');
      }
      function registration(){
@@ -38,11 +39,11 @@
           $site=new App\classes\site\Site();
           require('src/view/application/forum/traitement/forumTreatment.php');
      }
-     function listeEtudiant(){
+     function listeMembre(){
           require('src/view/partials/initialize.php');
 
           ob_start();
-          require('src/view/application/liste_etudiant/listeEtudiant.view.php');
+          require('src/view/application/liste_membre/listeMembre.view.php');
           $content=ob_get_clean();
           require('src/view/application/application.view.php');
      }

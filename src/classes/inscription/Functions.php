@@ -49,16 +49,16 @@ use App\classes\User\User;
                 }
            }
 
-        	public function verifyMatricule($matricule,$confmatricule){
-                 if($matricule==$confmatricule){
+        	public function verifyMotpass($motpass,$confmotpass){
+                 if($motpass==$confmotpass){
                  	return true;
                  }
                  return false;
         	}
 
 
-            public function insertDb($matricule,$prenoms,$classe,$dateNaissance,$numeroTelephone,$photoDeProfil){
-                  $user=new User($matricule,$prenoms,$classe,$dateNaissance,$numeroTelephone,$photoDeProfil);
+            public function insertDb($username,$email,$motpass,$photoDeProfil){
+                  $user=new User(null,$username,$email,$motpass,$photoDeProfil);
                   $userManager=new UserManager();
                   $userManager->create($user);
             }

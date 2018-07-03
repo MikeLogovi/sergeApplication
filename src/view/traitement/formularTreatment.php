@@ -6,23 +6,28 @@ use \PDO as PDO;
     $functions = new Functions();
     $functions->save_input_data();
     $userManager=new UserManager();
-    if($functions->not_empty_by_post(['matricule','confmatricule','prenoms','classe','dateNaissance','numeroTelephone'])){
-                  if(!$functions->verifyMatricule($_POST['matricule'],$_POST['confmatricule'])){
-                        $_SESSION['errors']['errmatricule']="Veuillez bien revérifier votre matricule!";
+    if(isset($_SESSION['user']['id'])){
+      header('Location:acceuil');
+    }
+    if($functions->not_empty_by_post(['motpass','confmotpass','email','username'])){
+                  if(!$functions->verifyMotpass($_POST['motpass'],$_POST['confmotpass'])){
+                        $_SESSION['errors']['errmotpass']="Veuillez bien revérifier votre mot de passe!";
                   }
 
-                  $exist=$userManager->userNotAlreadyExist($_POST['matricule']);
+                  $exist=$userManager->userNotAlreadyExist($_POST['username']);
                   if(!empty($exist)){
-                     if(!empty($exist['matricule'])){
-                         $_SESSION['errors']['errmatriculealreadyexist']="Matricule déjà existant";
+                     if(!empty($exist['username'])){
+                         $_SESSION['errors']['errusernamealreadyexist']="Nom d'utilisateur déjà existant";
                       }
                   }
                 if(isset($_SESSION['errors'])){
                        header('Location:inscription');
                   }
                   else{
-                           $picture=null;
+
+                     $picture=null;
                           if(!empty($_FILES['photoDeProfil'])){
+
                                if($_FILES['photoDeProfil']['error']==0 ){
                                   if($_FILES['photoDeProfil']['size']<=1000000){
 
@@ -33,7 +38,7 @@ use \PDO as PDO;
                                           header('Location:inscription');
                                       }
                                      else{
-                                          $token=sha1($_POST['prenoms'].$_POST['classe'].$_POST['numeroTelephone']);
+                                          $token=sha1($_POST['username'].$_POST['email']);
                                           $picture='src/public/photo_membre/'.$token.'.'.$extension;
                                            move_uploaded_file($_FILES['photoDeProfil']['tmp_name'],$picture);
                                          }
@@ -45,31 +50,30 @@ use \PDO as PDO;
                                 }
                               else{
                                   $_SESSION['errors']['errpostfile']="Erreur dans l'upload de la photo.Veuillez reéssayer s'il vous plait";
+
                                    header('Location:inscription');
                                   }
                           }
-                    $matricule=$_POST['matricule'];
-                    $prenoms=$_POST['prenoms'];
-                    $classe=$_POST['classe'];
-                    $dateNaissance=$_POST['dateNaissance'];
-                    $numeroTelephone=$_POST['numeroTelephone'];
-                    $photoDeProfil=$picture;
-                    $matriculeHash=sha1(md5($matricule));
-                    $functions->insertDb($functions->xssControl($matriculeHash),$functions->xssControl($prenoms),
-                    $functions->xssControl($classe),$functions->xssControl($dateNaissance),$functions->xssControl($numeroTelephone),$functions->xssControl($photoDeProfil));
 
-                    $req=$userManager->read( $matriculeHash)->fetch(PDO::FETCH_OBJ);
-                    $_SESSION['user']['matricule']=$req->matricule;
-                    $_SESSION['user']['prenoms']=$req->prenoms;
-                    $_SESSION['user']['classe']=$req->classe;
-                    $_SESSION['user']['numeroTelephone']=$req->numeroTelephone;
-                    $_SESSION['user']['dateNaissance']=$req->dateNaissance;
+                    $username=$_POST['username'];
+                    $email=$_POST['email'];
+                    $motpass=$_POST['motpass'];
+                    $photoDeProfil=$picture;
+                    $motpassHash=sha1(md5($motpass));
+                    $functions->insertDb($functions->xssControl($username),$functions->xssControl($email),$functions->xssControl($motpassHash),$functions->xssControl($photoDeProfil));
+
+                    $req=$userManager->read($username)->fetch(PDO::FETCH_OBJ);
+                    $_SESSION['user']['id']=$req->id;
+                    $_SESSION['user']['username']=$req->userName;
+                    $_SESSION['user']['email']=$req->email;
+                    $_SESSION['user']['motpass']=$req->motpass;
                     $_SESSION['user']['photoDeProfil']=$req->photoDeProfil;
+
 
                     header('location:forum');
                   }
    }
     else{
-      $_SESSION['errors']['errchamp']="Tous les champs sauf pour la photo sont obligatoires";
+     $_SESSION['errors']['errchamp']="Tous les champs sauf pour la photo sont obligatoires";
     	header('location:inscription');
     }

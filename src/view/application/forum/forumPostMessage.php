@@ -5,7 +5,7 @@ extract($_POST);
 
 $forumManager=new ForumManager();
 
-if($forumManager->postMessage($_SESSION['user']['matricule'],htmlspecialchars($message),
+if($forumManager->postMessage($_SESSION['user']['id'],$message,
   htmlspecialchars($titre))){
 	echo '1';
 }

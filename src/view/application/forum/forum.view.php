@@ -3,7 +3,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">ESGIS'S FORUM</h1>
+            <h1 class="m-0 text-dark"><?=$site::WEB_SITE_NAME;?>'S FORUM</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -43,13 +43,14 @@
               <div class="card-footer">
                 <form action="#" method="post">
                 	 <input type="text" name='ftitre' id='ftitre' placeholder="Ecrire un titre....." class="form-control"><br/>
-                  <div class="input-group">
 
-                    <input type="text" name='fmessage' id='fmessage' placeholder="Ecrire un message....." class="form-control">
-                    <span class="input-group-append">
+
+                    <textarea name='fmessage' id='fmessage' class="form-control">"Ecrire un message....." </textarea>
+                      <span >
                       <button type="button" class="btn btn-primary" id='envoyer'>Envoyer</button>
                     </span>
-                  </div>
+
+
                 </form>
               </div>
 

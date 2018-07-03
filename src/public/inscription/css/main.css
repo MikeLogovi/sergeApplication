@@ -32,7 +32,7 @@ a {
   margin-left: -175px;
 }
 
-input[type="text"], input[type="password"],input[type="date"],select,input[type="file"]{
+input[type="text"], input[type="password"],input[type="date"],select,input[type="file"],input[type="email"]{
   width: 350px;
   padding: 20px 0px;
   background: transparent;
