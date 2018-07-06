@@ -1,10 +1,13 @@
 <?php
 namespace App\view\application\liste_etudiant;
 use App\classes\User\UserManager;
+use App\classes\Amitie\AmitieManager;
 use \PDO as PDO;
 $userManager=new UserManager();
+$amitieManager=new AmitieManager();
 $req=$userManager->getList();
 ?>
+
  <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -38,22 +41,17 @@ $req=$userManager->getList();
                 <tr>
                   <th>Nom d'utilisateur</th>
                   <th>Photo de profil</th>
-
+                  <th>Action</th>
                 </tr>
                 </thead>
-                <tbody>
-                <?php while($data=$req->fetch(PDO::FETCH_OBJ)){?>
-                    <tr>
-                      <td><?=$data->userName;?></td>
-                      <td><a href='<?=$data->photoDeProfil;?>'><img class="brand-image img-circle elevation-3" src='<?=$data->photoDeProfil;?>'/></a></td></td>
+                <tbody id ='tbody'>
 
-                    </tr>
-                <?php }?>
                 </tbody>
                 <tfoot>
                 <tr>
                   <th>Nom d'utilisateur</th>
                   <th>Photo de profil</th>
+                  <th>Action</th>
 
                 </tr>
                 </tfoot>
@@ -67,3 +65,16 @@ $req=$userManager->getList();
       </div>
       <!-- /.row -->
     </section>
+    <script>
+      var reloadTime=1000;
+      var timeout=1000;
+        function getMembers(){
+             $.getJSON('src/view/application/liste_membre/listMembreShow.php',function(data){
+
+                   $('#tbody').html(data);
+
+            });
+         }
+          window.setTimeout(getMembers,timeout);
+          window.setInterval(getMembers,reloadTime);
+    </script>

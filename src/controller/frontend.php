@@ -1,5 +1,6 @@
 <?php
 
+
      function homePage(){
           $site=new App\classes\site\Site();
      	require('src/view/acceuil/acceuil.view.php');
@@ -47,6 +48,12 @@
           $content=ob_get_clean();
           require('src/view/application/application.view.php');
      }
+     function creerAmitie($numero){
+          require('src/view/traitement/createAmitieTreatment.php');
+     }
+     function deleteAmitie($numero){
+          require('src/view/traitement/annulerAmitieTreatment.php');
+     }
       function listeMessage(){
           require('src/view/partials/initialize.php');
 
@@ -69,6 +76,19 @@
           require('src/view/partials/initialize.php');
           ob_start();
           require('src/view/application/modif_profil/modifProfil.view.php');
+          $content=ob_get_clean();
+          require('src/view/application/application.view.php');
+     }
+
+      function inbox($name){
+
+          $_SESSION['friend']['name']=$name;
+          header('Location:../inbox');
+     }
+     function inboxPerson(){
+          require('src/view/partials/initialize.php');
+          ob_start();
+          require('src/view/application/inbox/inbox.view.php');
           $content=ob_get_clean();
           require('src/view/application/application.view.php');
      }

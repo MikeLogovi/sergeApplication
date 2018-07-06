@@ -49,11 +49,29 @@ $router->post('/listeMessage/supprimer/:numero',function($numero){supprimerMessa
 $router->get('/profil',function(){ profil();});
 $router->post('/profil',function(){ profil();});
 
+$router->get('listeMembre/creerAmitie/:numero',function($numero){ creerAmitie($numero);})->with('numero','[0-9]+');
+$router->post('listeMembre/creerAmitie/:numero',function($numero){creerAmitie($numero);})->with('numero','[0-9]+');
+
+
+
+$router->get('listeMembre/deleteAmitie/:numero',function($numero){ deleteAmitie($numero);})->with('numero','[0-9]+');
+$router->post('listeMembre/deleteAmitie/:numero',function($numero){deleteAmitie($numero);})->with('numero','[0-9]+');
+
+
+
 $router->get('/modifProfil',function(){ modifProfil();});
 $router->post('/modifProfil',function(){ modifProfil();});
 
 $router->get('/modifProfilTreatment',function(){ modifProfilTreatment();});
 $router->post('/modifProfilTreatment',function(){ modifProfilTreatment();});
+
+
+
+$router->get('/inbox/:name',function($name){ inbox($name);})->with('name','[a-zA-Z0-9]+');
+$router->post('/inbox/:name',function($name){inbox($name);})->with('name','[a-zA-Z0-9]+');
+
+$router->get('/inbox',function(){ inboxPerson();});
+$router->post('/inbox',function(){ inboxPerson();});
 
 $router->get('/supprimerProfil',function(){ supprimerProfil();});
 $router->post('/supprimerProfil',function(){ supprimerProfil();});

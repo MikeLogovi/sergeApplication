@@ -11,5 +11,5 @@ if($userManager->delete($_SESSION['user']['id'])){
 }
 else{
   $_SESSION['errors']['deleteUser']="Votre compte n'a pas pu se supprimer.Veuillez reéssayer";
-  header('Location:listeEtudiant');
+  header('Location:listeMembre');
 }

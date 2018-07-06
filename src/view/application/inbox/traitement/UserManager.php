@@ -1,9 +1,6 @@
 <?php
-namespace App\classes\User;
-use App\classes\database\Manager;
-use App\classes\User\User;
-use \PDO as PDO;
-    Class UserManager extends Manager{
+   require('ManagerI1.php');
+    Class UserManager extends ManagerI1{
 
     	public function create(User $user){
            $bdd=$this->baseConnection();
@@ -25,6 +22,15 @@ use \PDO as PDO;
            );
            return $req;
     	}
+      public function readById($id){
+           $bdd=$this->baseConnection();
+           $req=$bdd->prepare('SELECT * FROM membre WHERE id=:id');
+           $req->execute(array(
+            'id'=>$id
+           )
+           );
+           return $req;
+      }
     	public function update(User $user,$id=null){
           $tab_user=array('userName'=>$user->getUserName(),'email'=>$user->getEmail(),'motpass'=>$user->getMotpass(),'photoDeProfil'=>$user->getPhotoDeProfil());
          // var_dump($tab_user);

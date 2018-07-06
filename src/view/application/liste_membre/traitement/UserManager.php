@@ -1,9 +1,6 @@
 <?php
-namespace App\classes\User;
-use App\classes\database\Manager;
-use App\classes\User\User;
-use \PDO as PDO;
-    Class UserManager extends Manager{
+require('Managerlm1.php');
+    Class UserManager extends Managerlm1{
 
     	public function create(User $user){
            $bdd=$this->baseConnection();

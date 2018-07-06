@@ -33,17 +33,17 @@ $req=$forumManager->getMessage();
         <nav role="navigation" class="probootstrap-nav hidden-xs">
           <ul class="probootstrap-main-nav">
             <?php if(isset($_SESSION['user']['id'])):?>
-            <li class="active"><a href="acceuil">ACCEUIL</a></li>
-            <li><a href="forum">PUBLIER UN MESSAGE</a></li>
-            <li><a href="listeMessage">GESTION DES MESSAGES</a></li>
-            <li><a href="listeMembre">GESTION DES MEMBRES</a></li>
+            <li class="active"><a href="acceuil"><strong style='font-size:15px;color:#012'>ACCEUIL</strong></a></li>
+            <li><a href="forum"><strong style='font-size:15px;color:#012'>PUBLIER UN MESSAGE</strong></a></li>
+            <li><a href="listeMessage"><strong style='font-size:15px;color:#012'>GESTION DES MESSAGES</strong></a></li>
+            <li><a href="listeMembre">G<strong style='font-size:15px;color:#012'>ESTION DES MEMBRES</strong></a></li>
 
             <?php else:?>
-            <li class="active"><a href="acceuil">ACCEUIL</a></li>
-            <li><a href="connexion">PUBLIER UN MESSAGE</a></li>
-            <li><a href="connexion">GESTION DES MESSAGES</a></li>
-            <li><a href="connexion">GESTION DES MEMBRES</a></li>
-            <li><a href="inscription">S'INSCRIRE</a></li>
+            <li class="active"><a href="acceuil"><strong style='font-size:15px;color:#012'>ACCEUIL</strong></a></li>
+            <li><a href="connexion"><strong style='font-size:15px;color:#012'>PUBLIER UN MESSAGE</strong></a></li>
+            <li><a href="connexion"><strong style='font-size:15px;color:#012'>GESTION DES MESSAGES</strong></a></li>
+            <li><a href="connexion"><strong style='font-size:15px;color:#012' >GESTION DES MEMBRES</strong></a></li>
+            <li><a href="inscription"><strong style='font-size:15px;color:#012'>S'INSCRIRE</strong></a></li>
             <?php endif?>
           </ul>
           <div class="extra-text visible-xs">
@@ -65,20 +65,20 @@ $req=$forumManager->getMessage();
     <section class="probootstrap-slider flexslider">
       <ul class="slides">
          <!-- class="overlay" -->
-        <li style="background-image: url(src/public/acceuil/img/img1.jpg);">
+        <li style="background-image: url(src/public/acceuil/img/acceuil2.png);">
           <div class="container">
             <div class="row">
               <div class="col-md-10 col-md-offset-1">
                 <div class="probootstrap-slider-text text-center">
-                  <h1 class="probootstrap-heading probootstrap-animate mb20" style="color:rgba(255,100,255,1)">Bienvenue sur le forum de <?=$site::WEB_SITE_NAME;?>!</h1>
-                  <p class="probootstrap-animate"><a style="background-color:rgba(255,100,255,1)" href="connexion" class="btn btn-ghost btn-ghost-white">CONNECTE TOI</a></p>
+                  <h1 class="probootstrap-heading probootstrap-animate mb20" style="color:rgba(255,0,0,0.5)">Bienvenue sur le forum de <?=$site::WEB_SITE_NAME;?>!</h1>
+                  <p class="probootstrap-animate"><a style="background-color:rgba(255,0,0,1)" href="connexion" class="btn btn-ghost btn-ghost-white">CONNECTE TOI</a></p>
                 </div>
               </div>
             </div>
           </div>
         </li>
         <!-- class="overlay" -->
-        <li style="background-image: url(src/public/acceuil/img/img2.jpg);">
+        <li style="background-image: url(src/public/acceuil/img/acceuil1.png);">
           <div class="container">
             <div class="row">
               <div class="col-md-10 col-md-offset-1">

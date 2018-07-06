@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="src/public/application/froala/css/plugins/file.css">
   <link rel="stylesheet" href="src/public/application/froala/css/plugins/quick_insert.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.css">
-
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   <!-------------------->
 </head>
 <body class="hold-transition sidebar-mini">
@@ -89,6 +89,31 @@
         </div>
       </li>
       <!-- Notifications Dropdown Menu -->
+      <div id='notifications'>
+       <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="fa fa-bell-o"></i>
+          <span class="badge badge-warning navbar-badge">15</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <span class="dropdown-item dropdown-header">15 Notifications</span>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <i class="fa fa-envelope mr-2"></i> 4 new messages
+            <span class="float-right text-muted text-sm">3 mins</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <i class="fa fa-users mr-2"></i> 8 friend requests
+            <span class="float-right text-muted text-sm">12 hours</span>
+          </a>
+          <div class="dropdown-divider"></div>
+
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+        </div>
+      </li>
+    </div>
 
       <li class="nav-item">
         <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
@@ -204,6 +229,7 @@
 <script src="src/public/application/plugins/jquery/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/emojionearea/3.4.1/emojionearea.min.js"></script>
 <script src="src/view/application/forum/forum_style/js/main.js"></script>
+<script src="src/view/application/inbox/inbox_style/js/main.js"></script>
 
 <script src="src/public/application/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="src/public/application/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
@@ -216,6 +242,8 @@
 
 var reloadTime=1000;
 var timeout=1000;
+var reloadTime2=20000;
+var timeout=1000;
 function getLastMessage(){
    $.getJSON('src/view/application/forum/forumGetLastMessages.php',function(data){
 
@@ -223,12 +251,22 @@ function getLastMessage(){
 
   });
 }
+function getNotifications(){
+  $.getJSON('src/view/application/notifications/getNotifications.php',function(data){
+
+         $('#notifications').html(data);
+
+  });
+}
+
   window.setTimeout(getLastMessage,timeout);
    window.setInterval(getLastMessage,reloadTime);
+    window.setTimeout(getNotifications,timeout);
+   window.setInterval(getNotifications,reloadTime2);
 </script>
 
 <!--- FROLA EDITOR--->
- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/mode/xml/xml.min.js"></script>
 
@@ -268,7 +306,14 @@ function getLastMessage(){
           class1: 'Class 1',
           class2: 'Class 2'
         }
-      })
+      });
+       $('#Imessage').froalaEditor({
+        // Define new link styles.
+        linkStyles: {
+          class1: 'Class 1',
+          class2: 'Class 2'
+        }
+      });
     });
   </script>
 <!------------------->
